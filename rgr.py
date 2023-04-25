@@ -116,7 +116,6 @@ def load_images(directory, number_of_photos):
 
 positive_img_num = 1
 negative_img_num = 0
-os.environ["NUMBA_NUM_THREADS"] = "4"
 
 images = load_images('data/Positive', positive_img_num) + load_images('data/Negative', negative_img_num)
 
