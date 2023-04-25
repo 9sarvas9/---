@@ -11,7 +11,6 @@ warnings.filterwarnings("ignore")
 # In[307]:
 
 
-from skimage.color import rgb2gray
 from skimage.io import imread
 from mpi4py import MPI
 from matplotlib import pyplot as plt
@@ -24,7 +23,6 @@ import numpy as np
 # In[308]:
 
 
-#@njit(parallel=True)
 def get_binary_image(image):
     
     grayness_index = np.average(image) / 1.618
@@ -40,7 +38,6 @@ def get_binary_image(image):
 # In[309]:
 
 
-#@njit(parallel=True)
 def get_gray_image(image):
     
     gray_image = [[0]*len(image[0]) for _ in range(len(image))]
@@ -57,7 +54,6 @@ def get_gray_image(image):
 # In[310]:
 
 
-#@njit(parallel=True)
 def predict_crack(image):
 
     white_pixel_num = 0
