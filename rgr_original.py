@@ -12,7 +12,6 @@ warnings.filterwarnings("ignore")
 
 
 from skimage.io import imread
-from mpi4py import MPI
 from matplotlib import pyplot as plt
 
 import time
@@ -82,14 +81,16 @@ def process_image(image):
 # In[312]:
 
 
-def plot_images(images):
+def plot_images(images, num):
     fig, axes = plt.subplots(1, len(images), figsize=(15, 15))
     axes[0].imshow(images[0])
     for i in range(1, len(images)):
         axes[i].imshow(images[i], cmap=plt.gray())
-        #axes[i].title.set_text()
 
-    fig.show()
+    for ax in axes:
+        ax.axis('off')
+
+    fig.savefig(f'./output/{num}.jpg')
 
 
 # In[313]:
@@ -126,6 +127,5 @@ for i in range(len(images)):
           f"actual value: {i<=positive_img_num}\n" + 
           f"predicted value: {predict_crack(processed_images[2])}")
     
-    plot_images(processed_images)
+    plot_images(processed_images, i+1)
 
-input()
