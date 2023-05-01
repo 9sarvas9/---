@@ -46,9 +46,7 @@ def get_gray_image(image):
     with pymp.Parallel(4) as p:
         for i in p.range(len(image)):
             for j in range(len(image[0])):
-                gray_image[i][j] = (int(image[i][j][0]) + 
-                                    int(image[i][j][1]) + 
-                                    int(image[i][j][2])) / 3
+                gray_image[i][j] = int(image[i][j][0]) * 0.2989 + int(image[i][j][1]) * 0.5870 + int(image[i][j][2]) * 0.1140
 
     return gray_image.tolist()
 
@@ -58,17 +56,24 @@ def get_gray_image(image):
 
 def predict_crack(image):
 
-    white_pixel_num = 0
-    for i in range(len(image)):
-        for j in range(len(image[0])):
-            white_pixel_num += 1 if image[i][j] == 1 else 0
+    white_pixel_sum = pymp.shared.array(4, dtype=int)
+    white_pixel_sum[0] = 0
 
+    with pymp.Parallel(4) as p:
+        local_count = 0
+        for i in p.range(len(image)):
+            for j in range(len(image[0])):
+                local_count += 1 if image[i][j] == 1 else 0
+        white_pixel_sum[p.thread_num] = local_count
+
+    white_pixel_num = sum(white_pixel_sum)
     crack_chance = white_pixel_num / (len(image) * len(image[0]))
 
     if crack_chance > 0.004:
         return True
     else:
         return False
+
 
 
 # In[311]:
@@ -114,8 +119,8 @@ def load_images(directory, number_of_photos):
 # In[314]:
 
 
-positive_img_num = 1
-negative_img_num = 0
+positive_img_num = 5
+negative_img_num = 5
 
 images = load_images('data/Positive', positive_img_num) + load_images('data/Negative', negative_img_num)
 
@@ -127,7 +132,7 @@ for i in range(len(images)):
 
     print(f"image №{i+1}\n" + 
           f"elapsed time: {end_time - start_time}\n" + 
-          f"actual value: {i<=positive_img_num}\n" + 
+          f"actual value: {i<positive_img_num}\n" + 
           f"predicted value: {predict_crack(processed_images[2])}")
     
     plot_images(processed_images, i+1)
