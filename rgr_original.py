@@ -109,8 +109,8 @@ def load_images(directory, number_of_photos):
 # In[314]:
 
 
-positive_img_num = 5
-negative_img_num = 5
+positive_img_num = 4
+negative_img_num = 0
 
 images = load_images('data/Positive', positive_img_num) + load_images('data/Negative', negative_img_num)
 
@@ -123,7 +123,7 @@ for i in range(len(images)):
     print(f"image №{i+1}\n" + 
           f"elapsed time: {end_time - start_time}\n" + 
           f"actual value: {i<positive_img_num}\n" + 
-          f"predicted value: {predict_crack(processed_images[2])}")
+          f"predicted value: {predict_crack(processed_images[2])}\n")
     
     plot_images(processed_images, i+1)
 

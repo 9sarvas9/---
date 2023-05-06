@@ -112,8 +112,8 @@ def load_images(directory, number_of_photos):
 # In[314]:
 
 
-positive_img_num = 5
-negative_img_num = 5
+positive_img_num = 4
+negative_img_num = 0
 
 images = load_images('data/Positive', positive_img_num) + load_images('data/Negative', negative_img_num)
 
